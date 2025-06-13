@@ -1,12 +1,12 @@
 import os
-import telegram
+from telegram import Bot
 from flask import Flask, request
 
 app = Flask(__name__)
 
 TOKEN = os.environ.get("BOT_TOKEN")
 CHAT_ID = os.environ.get("CHANNEL_ID")
-bot = telegram.Bot(token=TOKEN)
+bot = Bot(token=TOKEN)
 
 @app.route("/signal", methods=["POST"])
 def signal():
