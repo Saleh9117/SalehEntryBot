@@ -16,36 +16,20 @@ def signal():
 
     # محتوى التنبيه حسب نوع الصفقة
     signal_type = data.get("type")
-    pair = data.get("pair", "زوج غير محدد")
-    timeframe = data.get("timeframe", "فريم غير معروف")
-    duration = data.get("duration", "مدة غير معروفة")
+    pair = data.get("pair")
+    timeframe = data.get("timeframe")
+    duration = data.get("duration")
 
+    message = ""
     if signal_type == "buy":
-        msg = f"🚀 صفقة شراء على {pair} - فريم {timeframe} - مدة الصفقة: {duration} دقيقة"
+        message = f"🚀 شراء على {pair} - فريم {timeframe} - مدة الصفقة: {duration} دقائق"
     elif signal_type == "sell":
-        msg = f"🔻 صفقة بيع على {pair} - فريم {timeframe} - مدة الصفقة: {duration} دقيقة"
-    elif signal_type == "mt5":
-        entry = data.get("entry")
-        sl = data.get("sl")
-        tp1 = data.get("tp1")
-        tp2 = data.get("tp2")
-        msg = (
-            f"🧠 صفقة MT5\n"
-            f"الزوج: {pair}\n"
-            f"نوع الصفقة: {'شراء' if data.get('direction') == 'buy' else 'بيع'}\n"
-            f"سعر الدخول: {entry}\n"
-            f"وقف الخسارة: {sl}\n"
-            f"الأهداف: TP1 = {tp1}, TP2 = {tp2}"
-        )
+        message = f"🔻 بيع على {pair} - فريم {timeframe} - مدة الصفقة: {duration} دقائق"
     else:
-        msg = "📌 إشارة غير معروفة تم استلامها"
+        message = "إشارة غير معروفة"
 
-    bot.send_message(chat_id=CHAT_ID, text=msg)
-    return "Signal sent!", 200
-
-@app.route("/")
-def home():
-    return "Bot is running!"
+    bot.send_message(chat_id=CHAT_ID, text=message)
+    return "تم إرسال الإشارة", 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(debug=True)
